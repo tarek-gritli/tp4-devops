@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tp4
+  namespace: myapp
+  labels:
+    app: tp4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tp4
+  template:
+    metadata:
+      labels:
+        app: tp4
+    spec:
+      containers:
+        - name: tp4
+          image: lgritli/tp4:IMAGE_TAG
+          ports:
+            - containerPort: 5000

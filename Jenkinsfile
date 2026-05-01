@@ -34,5 +34,28 @@ pipeline {
                 }
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                script {
+                    dockerImage = docker.build("lgritli/tp4:${BUILD_NUMBER}")
+                }
+            }
+}
+stage('Trivy Scan') {
+    steps {
+        sh "trivy image --exit-code 1 --severity CRITICAL lgritli/tp4:${BUILD_NUMBER}"
+    }
+}
+stage('Docker Push') {
+    steps {
+        script {
+            docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-creds') {
+                dockerImage.push("${BUILD_NUMBER}")
+                dockerImage.push("latest")
+            }
+        }
+    }
+}
     }
 }

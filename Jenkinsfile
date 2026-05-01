@@ -16,11 +16,11 @@ pipeline {
         }
         stage('Unit Tests') {
             steps {
-                sh 'uv run pytest test_app.py --cov=app --cov-report=xml -v'
+                sh 'uv run pytest test_app.py --cov=app --cov-report=xml --junitxml=test-results/results.xml -v'
             }
             post {
                 always {
-                    junit 'test-results/*.xml'  // optional
+                    junit 'test-results/results.xml'
                 }
             }
         }
